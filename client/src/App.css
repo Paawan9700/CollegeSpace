@@ -1,0 +1,14 @@
+.main-page {
+  display: flex;
+  width: 100%;
+}
+.content {
+  width: 100%;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  /* background-color: rgb(241, 242, 242); */
+}

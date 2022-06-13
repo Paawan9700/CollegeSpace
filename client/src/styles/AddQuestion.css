@@ -1,0 +1,49 @@
+.add-question {
+  width: 100%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  background-color: rgb(255, 255, 255);
+  /* border: 1px solid rgb(168, 168, 168); */
+}
+.title {
+  border: 0px;
+  padding: 0.8rem;
+  width: 80%;
+  margin-top: 20px;
+  background-color: rgb(241, 242, 242);
+}
+.question-body {
+  border: 0px;
+  padding: 3rem;
+  margin-top: 1rem;
+  width: 80%;
+  background-color: rgb(241, 242, 242);
+}
+
+.tags {
+  margin-top: 7px;
+  width: 80%;
+  border-radius: 7px;
+  padding: 8px;
+  border: 0;
+  background-color: rgb(241, 242, 242);
+}
+.ask-button {
+  padding: 1rem;
+  margin-top: 0.5rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  color: black;
+  border: 0;
+  cursor: pointer;
+}
+.question-form {
+  border-radius: 7px;
+}

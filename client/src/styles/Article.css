@@ -1,0 +1,115 @@
+.article {
+  background-color: rgb(255, 255, 255);
+  color: black;
+  margin: 10px;
+  padding: 1rem;
+  /* border-style: solid;
+  border-width: 1px; */
+  /* box-shadow: 2px 2px; */
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+h6,
+h5,
+h4,
+h3 {
+  background-color: rgb(255, 255, 255);
+  color: black;
+}
+span {
+  color: rgb(39, 166, 216);
+  background-color: rgb(255, 255, 255);
+}
+.answer-input {
+  padding: 3rem;
+  width: 100%;
+  border: 1px;
+  white-space: pre-wrap;
+  background-color: rgb(249, 249, 249);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+}
+.answer-body {
+  white-space: pre-wrap;
+  background-color: rgb(255, 255, 255);
+}
+
+.article-question {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+}
+.article-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+}
+.submit-answer,
+.delete-question,
+.answer-question {
+  padding: 10px;
+  border: 0;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 6px;
+  background-color: lightblue;
+}
+
+.answer {
+  color: black;
+  border: 1px solid rgb(172, 172, 172);
+  background-color: rgb(255, 255, 255);
+  padding: 6px;
+  margin-bottom: 8px;
+  margin-top: 7px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 5px;
+}
+
+.answer-box {
+  border: 0;
+}
+.tags {
+  display: flex;
+  flex-direction: row;
+  background-color: rgb(255, 255, 255);
+}
+.votes {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: rgb(255, 255, 255);
+}
+.upvote,
+.downvote {
+  width: 30px;
+  background-color: red;
+  height: 20px;
+}
+.upvote-btn,
+.downvote-btn {
+  margin-right: 10px;
+  height: 38px;
+  cursor: pointer;
+}
+.upvote-btn,
+.upvote {
+  background-color: lightgreen;
+}
+.downvote,
+.downvote-btn {
+  background-color: lightsalmon;
+}
+.expand {
+  color: rgb(45, 105, 170);
+  font-weight: 700;
+  cursor: pointer;
+}
+.article-tags {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  flex-direction: row;
+}
+.body-text {
+  font-weight: normal;
+}
