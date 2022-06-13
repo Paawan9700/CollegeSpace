@@ -3,10 +3,12 @@ const Joi = require("joi");
 
 const answerSchema = new mongoose.Schema(
   {
+    // reference must be a user to make sure that which user has added this questions
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
+    // question as reference that this user belong to which question
     question: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Question",
