@@ -1,22 +1,20 @@
 import axios from "axios";
+
 import React, { useState, useEffect } from "react";
 import "../styles/Article.css";
+
+// images of upvaote and downvote
 import upArrow from "../static/up-arrow.png";
 import downArrow from "../static/down-arrow.png";
 import Answer from "./Answer";
-const Article = ({
-  key,
-  question,
-  user,
-  title,
-  questionBody,
-  tags,
-  votes,
-  deleteQuestion,
-  setDeleteQuestion,
-  isShowSignup,
-  setIsShowSignup,
-}) => {
+
+const Article = (props) => {
+
+  // destructuring 
+  const { key, question, user, title, questionBody, tags, votes, deleteQuestion, setDeleteQuestion, setIsShowSignup } = props
+
+  const host = "http://localhost:5000"
+
   const [answerNow, setAnswerNow] = useState(false);
   const [answerBody, setAnswer] = useState("");
   const [expand, setExpand] = useState(false);
@@ -31,7 +29,7 @@ const Article = ({
     let votes = 0;
     await axios
       .post(
-        "http://localhost:5000/api/answers",
+        `${host}/api/answers`,
         {
           question,
           answerBody,
@@ -49,19 +47,21 @@ const Article = ({
   };
 
   const DeleteHandler = async () => {
+    const questionToBeDeleted = question;
     await axios
-      .delete(`http://localhost:5000/api/questions/${question}`, {
+      .delete(`${host}/api/questions/${questionToBeDeleted}`, {
         headers: { "x-auth-token": token },
       })
       .then(() => setDeleteQuestion(!deleteQuestion));
   };
 
-  const VoteHandler = async (req) => {
+  const VoteHandler = async (userAction) => {
+    const questionToBevoted = question;
     await axios
       .post(
-        `http://localhost:5000/api/questions/${question}/act`,
+        `${host}/api/questions/${questionToBevoted}/action`,
         {
-          action: req.target.className,
+          actionTaken: userAction.target.className,
         },
         {
           headers: { "x-auth-token": token },
@@ -78,38 +78,57 @@ const Article = ({
   useEffect(() => {
     async function getAnswersHandler() {
       const answers = await axios.get(
-        `http://localhost:5000/api/answers/${question}`
+        `${host}/api/answers/${question}`
       );
       setAllAnswers(answers);
     }
     getAnswersHandler();
 
     async function getUsername() {
-      await axios.get(`http://localhost:5000/api/users/${user}`).then((res) => {
+      const userId = user;
+      // making an API call to the user name with this particular userId
+      await axios.get(`${host}/api/users/${userId}`).then((res) => {
         setUsername(res.data.name);
       });
     }
     getUsername();
   }, [newAnswers, question, user]);
+
   const ExpandHandler = () => {
     setExpand(!expand);
   };
+
   const AnswerHandler = () => {
-    setAnswerNow(!answerNow);
+    if (answerNow === true) {
+      setAnswerNow(false);
+    }
+    else {
+      setAnswerNow(true);
+    }
   };
+
+  const handleAnswer = (e) => {
+    setAnswer(e.target.value);
+  }
+
 
   return (
     <div key={key} className="article">
       <div className="article-body">
-        <h5>{username}</h5>
+
+        {/* the name if the user who entered this question */}
+        <h5>Question written By - {username}</h5>
+        <hr></hr>
         <div className="article-question">
           <h4 className="title-text">
             <span>Question.</span> {title}
           </h4>
+
           <div className="article-buttons">
             <button className="answer-question" onClick={AnswerHandler}>
-              Answer
+              Want To Answer
             </button>
+
             {user === window.sessionStorage.getItem("userId") ? (
               <button className="delete-question" onClick={DeleteHandler}>
                 Delete
@@ -124,15 +143,15 @@ const Article = ({
               <button className="downvote-btn" onClick={VoteHandler}>
                 <img alt="downvote" className="downvote" src={downArrow}></img>
               </button>
+
               <h3 className="counter">{currentVotes}</h3>
             </div>
           </div>
         </div>
+
         <h5 className="body-text">
           <span>Description.</span> {questionBody}
-          <span className="expand" onClick={ExpandHandler}>
-            &nbsp;&nbsp;&nbsp;...(more answers)
-          </span>
+
         </h5>
         <div className="article-tags">
           <span className="tag">Tags. &nbsp;&nbsp;</span>
@@ -140,15 +159,20 @@ const Article = ({
             <h5>{tag} &nbsp;&nbsp;</h5>
           ))}
         </div>
-        <h5>Answers</h5>
+
+        <hr></hr>
+          <span>All related Answers:</span>
+        <span className="expand" onClick={ExpandHandler}>
+          &nbsp;&nbsp;&nbsp;(View All answers)
+        </span>
       </div>
       {answerNow ? (
         <form className={`answer-box ${answerNow ? "active" : ""}`}>
           <textarea
             type="text"
             className="answer-input"
-            onChange={(e) => setAnswer(e.target.value)}
-            placeholder="Write your answer"
+            onChange={handleAnswer}
+            placeholder="Write your relevant answer"
           />
           <button
             type="button"

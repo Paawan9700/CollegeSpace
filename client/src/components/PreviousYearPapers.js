@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/PreviousYearPapers.scss";
 import PaperCard from "./PaperCard";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Nav from "./Nav";
 
 const PreviousYearPapers = ({ filesList, errorMsg }) => {

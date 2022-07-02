@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 
+// bluprint that what a file actually gonna contains
 const fileSchema = new mongoose.Schema(
   {
     name: {

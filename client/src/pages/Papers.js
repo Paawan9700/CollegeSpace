@@ -25,9 +25,10 @@ const Papers = () => {
     };
     getFilesList();
   }, []);
-
+  
   useEffect(() => {
     filter();
+    // eslint-disable-next-line
   }, [branch, semester, subject]);
 
   const filter = () => {

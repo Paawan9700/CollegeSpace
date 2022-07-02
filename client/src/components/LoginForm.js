@@ -4,21 +4,29 @@ import tick from "../static/tick.png";
 import cross from "../static/cross.png";
 import "../styles/LoginForm.css";
 
-const LoginForm = ({ isShowLogin, setIsShowLogin, setIsLoggedIn }) => {
+const LoginForm = (props) => {
+
+  // destructing properties and functions
+  const { isShowLogin, setIsShowLogin, setIsLoggedIn } = props;
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginAnimation, setLoginAnimation] = useState(0);
-  const Login = async () => {
+
+
+  const handleLogin = async () => {
     await axios
-      .post("http://localhost:5000/api/auth", {
-        email,
-        password,
-      })
-      .then((res) => {
+    .post("http://localhost:5000/api/auth", {
+      email,
+      password,
+    })
+    .then((res) => {      
+        // ????? detailed meaning of these
         window.sessionStorage.setItem("x-auth-token", res.data.token);
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
         window.sessionStorage.setItem("name", res.data.name);
+        
         setIsLoggedIn(true);
         setLoginAnimation(1);
         setTimeout(() => {
@@ -34,32 +42,46 @@ const LoginForm = ({ isShowLogin, setIsShowLogin, setIsLoggedIn }) => {
       });
   };
 
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  }
+
   return (
+    // that login form will be active or not is actually depending on the isShowLogin
     <div className={`form-box solid login-form ${isShowLogin ? "active" : ""}`}>
       <form className="form">
-        <h1 className="login-text">Log In</h1>
-        <label>Email</label>
+        <h1 className="login-text">Welcome Back!</h1>
+        <label>Email address</label>
         <br></br>
+
         <input
-          type="text"
-          onChange={(e) => setEmail(e.target.value)}
+          type="email"
+          onChange={onChangeEmail}
           className="login-box"
         />
+
         <br></br>
         <label>Password</label>
         <br></br>
+
         <input
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={onChangePassword}
           className="login-box"
         />
+
         <br></br>
         <input
           type="button"
           value="LOGIN"
-          onClick={Login}
+          onClick={handleLogin}
           className="login-btn"
         />
+
       </form>
       {loginAnimation === 1 ? (
         <div className="login-checkbox">

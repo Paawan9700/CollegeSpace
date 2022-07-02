@@ -43,21 +43,21 @@ userSchema.methods.generateAuthToken = function () {
 const User = mongoose.model("User", userSchema);
 
 // used for validation when a new user is entered (alternative -> express-validator)
-function validateUser(user) {
-  // validateUser taking user as parameter to validate this particular user
-  const schema = Joi.object({
-    // required -> this field is required , max(size) -> max length allowed, string -> datatype
-    name: Joi.string().max(50).required(),
-    email: Joi.string().max(255).required().email(),
-    password: Joi.string().max(255).required(),
-    isAdmin: Joi.boolean(),
-  });
+// function validateUser(user) {
+//   // validateUser taking user as parameter to validate this particular user
+//   const schema = Joi.object({
+//     // required -> this field is required , max(size) -> max length allowed, string -> datatype
+//     name: Joi.string().max(50).required(),
+//     email: Joi.string().max(255).required().email(),
+//     password: Joi.string().max(255).required(),
+//     isAdmin: Joi.boolean(),
+//   });
 
-  return schema.validate(user);
-}
+//   return schema.validateUser(user);
+// }
 
 // export User model to use this in other files as well
 exports.User = User;
 
 // so this validateuser function is exported outside this file and can be used anywhere to validate user
-exports.validate = validateUser;
+// exports.validate = validateUser;

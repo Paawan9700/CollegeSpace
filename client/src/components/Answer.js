@@ -4,10 +4,11 @@ import "../styles/Article.css";
 const Answer = ({ answerBody, answerUserId }) => {
   const [answerUsername, setAnswerUsername] = useState("");
 
+  const host = "http://localhost:5000";
   useEffect(() => {
     async function getUsername() {
       await axios
-        .get(`http://localhost:5000/api/users/${answerUserId}`)
+        .get(`${host}/api/users/${answerUserId}`)
         .then((res) => {
           setAnswerUsername(res.data.name);
         });
@@ -17,7 +18,7 @@ const Answer = ({ answerBody, answerUserId }) => {
 
   return (
     <div className="answer">
-      <h5>{answerUsername}</h5>
+      <h5>Answer By - {answerUsername}</h5>
       <p className="answer-body">{answerBody}</p>
     </div>
   );

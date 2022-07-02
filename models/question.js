@@ -6,7 +6,6 @@ const questionSchema = new mongoose.Schema(
   {
     // user is a foreign key states that which user has entered this particular question
     // or this question is belong to which user
-
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -11,7 +11,8 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
   const [name, setName] = useState("");
   const [loginAnimation, setLoginAnimation] = useState(0);
 
-  const Signup = async () => {
+  const handleSignup = async () => {
+    console.log("signup is clicked")
     await axios
       .post("http://localhost:5000/api/users", {
         name,
@@ -19,10 +20,13 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
         password,
       })
       .then((res) => {
+        
+        
         window.sessionStorage.setItem("x-auth-token", res.data.token);
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
         window.sessionStorage.setItem("name", name);
+
         setLoginAnimation(1);
         setIsLoggedIn(true);
         setTimeout(() => {
@@ -39,15 +43,27 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
       });
   };
 
+  const onChangeName = (e) => {
+    setName(e.target.value);
+  }
+
+  const onChangeEmail = (e) => {
+    setEmail(e.target.value);
+  }
+
+  const onChangePassword = (e) => {
+    setPassword(e.target.value);
+  }
+
   return (
     <div className={`form-box login-form ${isShowSignup ? "active" : ""}`}>
       <form className="form">
-        <h1 className="login-text">Sign Up</h1>
+        <h1 className="login-text">Welcome To CollegeSpace</h1>
         <label>Name</label>
         <br></br>
         <input
           type="text"
-          onChange={(e) => setName(e.target.value)}
+          onChange={onChangeName}
           className="login-box"
         />
         <br></br>
@@ -55,7 +71,7 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
         <br></br>
         <input
           type="text"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={onChangeEmail}
           className="login-box"
         />
         <br></br>
@@ -63,14 +79,14 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
         <br></br>
         <input
           type="password"
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={onChangePassword}
           className="login-box"
         />
         <br></br>
         <input
           type="button"
           value="SIGN UP"
-          onClick={Signup}
+          onClick={handleSignup}
           className="login-btn"
         />
       </form>

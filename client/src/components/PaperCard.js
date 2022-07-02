@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/PreviousYearPapers.scss";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
 
 const API_URL = "http://localhost:5000/api/file";
 
 const PaperCard = ({ id, branch, semester, subject, mimetype }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
+  console.log(errorMsg);
   const downloadFile = async (path) => {
     try {
       const result = await axios.get(`${API_URL}/download/${id}`);

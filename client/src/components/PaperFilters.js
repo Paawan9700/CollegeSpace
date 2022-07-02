@@ -17,13 +17,64 @@ const Sidebar = ({
         CCE: ["E", "F", "G", "H"],
         ECE: ["I", "J", "K", "L"],
         ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
       },
     ],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      },
+    ]
   ];
 
   const semesterHandler = (e) => {
@@ -38,7 +89,7 @@ const Sidebar = ({
 
   const subjectsHandler = (branchPass, semesterPass) => {
     const subjectList = [];
-    if (branchPass && semesterPass != 0)
+    if (branchPass && semesterPass !== 0)
       for (
         let i = 0;
         i < allSubjects[semesterPass][0][branchPass].length;

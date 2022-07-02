@@ -2,17 +2,29 @@ import axios from "axios";
 import React from "react";
 import "../styles/Sidebar.css";
 
-function Sidebar({ articles, setArticles }) {
-  const clickHandler = async (choice) => {
-    console.log(choice.target.outerText);
-    const articles = await axios
-      .get(`http://localhost:5000/api/questions/${choice.target.outerText}`)
-      .catch((e) => {
-        console.log(e);
+function Sidebar(props) {
+
+  // destructuring
+  const {setArticles} = props;
+  const host = "http://localhost:5000";
+
+  // what is gonna happen when each categaory is clicked seperatly
+  const clickHandler = async (category) => {
+
+    console.log(category.target.outerText);
+    const categoryName = category.target.outerText;
+
+    const filterarticles = await axios
+      .get(`${host}/api/questions/${categoryName}`)
+      .catch((error) => {
+        console.log(error);
       });
-    setArticles(articles.data);
+    setArticles(filterarticles.data);
   };
+
+
   return (
+    // css can be applied on this className = "sidebars"
     <div className="sidebars">
       <div className="sidebar" onClick={clickHandler}>
         <img

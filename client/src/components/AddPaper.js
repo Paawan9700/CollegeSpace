@@ -1,9 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+// import { Link, useLocation } from "react-router-dom";
+// import {Row, Col} from "react-bootstrap";
 
+// the common url to be used every where
 const API_URL = "http://localhost:5000/api/file";
 
 const AddPaper = (props) => {
@@ -27,18 +29,70 @@ const AddPaper = (props) => {
         ME: ["M", "N", "O", "P"],
       },
     ],
-    [],
-    [],
-    [],
-    [],
-    [],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ],
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ], 
+    [
+      {
+        CSE: ["A", "B", "C", "D"],
+        CCE: ["E", "F", "G", "H"],
+        ECE: ["I", "J", "K", "L"],
+        ME: ["M", "N", "O", "P"],
+      }
+    ]
   ];
 
   const handleOnSubmit = async (event) => {
+    alert("your Notes / Paper has been added!")
     event.preventDefault();
     console.log(file);
     try {
-      if (subject !== "" && semester !== 0 && branch != "") {
+      if (subject !== "" && semester !== 0 && branch !== "") {
         if (file) {
           const formData = new FormData();
           formData.append("file", file);
@@ -88,7 +142,11 @@ const AddPaper = (props) => {
 
   const subjectsHandler = (branchPass) => {
     const subjectList = [];
-    if (branch && semester != 0)
+
+    console.log(branchPass);
+    console.log(semester);
+
+    if (branchPass && semester !== 0){
       for (let i = 0; i < allSubjects[semester][0][branchPass].length; i++) {
         subjectList.push(
           <li className="dropdown-item" onClick={subjectHandler}>
@@ -96,21 +154,25 @@ const AddPaper = (props) => {
           </li>
         );
       }
+    }
     setAllSemesterSubjects(subjectList);
   };
 
-  const semesterHandler = (e) => {
-    setSemester(parseInt(e.target.outerText[9]));
-    subjectsHandler(e.target.outerText);
+  const semesterHandler = (choosenSemester) => {
+    setSemester(parseInt(choosenSemester.target.outerText[9]));
+    // subjectsHandler(choosenSemester.target.outerText);
+    // console.log(choosenSemester.target.outerText);
   };
 
-  const branchHandler = (e) => {
-    setBranch(e.target.outerText);
-    subjectsHandler(e.target.outerText);
+  const branchHandler = (choosenBranch) => {
+    setBranch(choosenBranch.target.outerText);
+    subjectsHandler(choosenBranch.target.outerText);
   };
+
   const subjectHandler = (e) => {
     setSubject(e.target.outerText);
   };
+
 
   return (
     <div>
@@ -119,7 +181,7 @@ const AddPaper = (props) => {
 
         <div className="d-flex flex-row justify-content-evenly">
           <button
-            class="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary dropdown-toggle"
             type="button"
             id="navbarDropdown2"
             data-bs-toggle="dropdown"
@@ -128,6 +190,7 @@ const AddPaper = (props) => {
             {semester === 0 ? "Select Semester" : "Semester " + semester}
           </button>
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown2">
+            {/* all semester all listed here */}
             <li className="dropdown-item" onClick={semesterHandler}>
               Semester 1
             </li>
@@ -155,7 +218,7 @@ const AddPaper = (props) => {
           </ul>
 
           <button
-            class="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary dropdown-toggle"
             type="button"
             id="navbarDropdown3"
             data-bs-toggle="dropdown"
@@ -180,7 +243,7 @@ const AddPaper = (props) => {
           </ul>
 
           <button
-            class="btn btn-secondary dropdown-toggle"
+            className="btn btn-secondary dropdown-toggle"
             type="button"
             id="navbarDropdown1"
             data-bs-toggle="dropdown"
@@ -212,6 +275,8 @@ const AddPaper = (props) => {
               </div>
             )}
           </Dropzone>
+
+
           {previewSrc ? (
             isPreviewAvailable ? (
               <div className="image-preview">
@@ -227,9 +292,11 @@ const AddPaper = (props) => {
               <p>Image preview will be shown here after selection</p>
             </div>
           )}
+
+
         </div>
         <Button variant="primary" type="submit">
-          Submit
+          Add Notes / Paper
         </Button>
       </Form>
     </div>

@@ -1,19 +1,23 @@
+// axios is used to made http request from the browser to a particular url
 import axios from "axios";
+
 import React, { useState, useEffect } from "react";
+// just bringing out the article component here
 import Article from "./Article.js";
 
-const Feed = ({
-  newQuestion,
-  articles,
-  setArticles,
-  isShowSignup,
-  setIsShowSignup,
-}) => {
+const Feed = (props) => {
+
+  // destructuring from props
+  const {newQuestion, articles, setArticles, isShowSignup, setIsShowSignup} = props;
+
+  const host = "http://localhost:5000";
   const [deleteQuestion, setDeleteQuestion] = useState(false);
+  // as soon as a user entered into the site the already questions and answers present
+  // there can be shown to the user by using iseEffect
   useEffect(() => {
     async function fetchArticles() {
       const ArticleList = await axios.get(
-        "http://localhost:5000/api/questions"
+        `${host}/api/questions`
       );
       setArticles(ArticleList.data);
     }
@@ -22,9 +26,10 @@ const Feed = ({
 
   return (
     <div className="articles">
-      <h2>All question answers</h2>
+      <h2>Frequently Asked Questions</h2>
       {articles.map((article) => (
         <Article
+        // key is the meccessaty whenever i am using .map function
           key={article._id}
           question={article._id}
           user={article.user}
@@ -41,4 +46,5 @@ const Feed = ({
     </div>
   );
 };
+
 export default Feed;

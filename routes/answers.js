@@ -1,25 +1,40 @@
 const { Answer, validate } = require("../models/answer");
+
 const { Question } = require("../models/question");
-const mongoose = require("mongoose");
+
 const express = require("express");
 const router = express.Router();
+
+// auth being middleware here
 const auth = require("../middleware/auth");
 
+// route 1 -> get all the answers
 router.get("/", async (req, res) => {
   const answers = await Answer.find().sort("createdAt");
   answers.reverse();
   res.send(answers);
 });
+
+// route 2 -> saving the answer entered by the user into the database
 router.post("/", auth, async (req, res) => {
+
+  // firstly validation is being done
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
-  const question = await Question.findById(req.body.question);
-  if (!question) return res.status(400).send("Invalid question");
+
+
+  const foundquestion = await Question.findById(req.body.question);
+  if (!foundquestion) return res.status(400).send("Invalid question");
+
+  // destructuring
+  const {answerBody, votes, question} = req.body;
+
+  // making a new answer to be saved
   let answer = new Answer({
-    answerBody: req.body.answerBody,
-    votes: req.body.votes,
+    answerBody: answerBody,
+    votes: votes,
     user: req.user._id,
-    question: req.body.question,
+    question: question,
   });
   answer = await answer.save();
   res.send(answer);
