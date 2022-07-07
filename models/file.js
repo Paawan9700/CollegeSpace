@@ -7,7 +7,7 @@ const fileSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    semester: {
+    semester: { 
       type: Number,
       required: true,
       trim: true,
