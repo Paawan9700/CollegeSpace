@@ -41,7 +41,7 @@ const Nav = (props) => {
       {/* different routes to render to a different page */}
       <Link to='/addPaper'>
         <button>
-          Add Paper
+          Add Paper / Notes
         </button> </Link>
       <Link to='/previousYearPapers'>
         <button>

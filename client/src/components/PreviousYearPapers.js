@@ -2,16 +2,19 @@ import React from "react";
 import "../styles/PreviousYearPapers.scss";
 import PaperCard from "./PaperCard";
 import { Link } from "react-router-dom";
-import Nav from "./Nav";
+// import Nav from "./Nav";
 
-const PreviousYearPapers = ({ filesList, errorMsg }) => {
+const PreviousYearPapers = (props) => {
+
+  // destructuring
+  const {filesList, errorMsg} = props;
+
   return (
     <div>
-      <Nav />
       <div className="d-flex flex-row w-100">
         <div>
           <Link to="/addPaper">
-            <button type="button" class="btn btn-secondary">
+            <button type="button" className="btn btn-secondary">
               Add Paper
             </button>
           </Link>
@@ -20,28 +23,21 @@ const PreviousYearPapers = ({ filesList, errorMsg }) => {
             {errorMsg && <p className="errorMsg">{errorMsg}</p>}
             {filesList.length > 0 ? (
               filesList.map(
-                ({
-                  _id,
-                  subject,
-                  branch,
-                  semester,
-                  file_path,
-                  file_mimetype,
-                }) => (
+                (file) => (
                   <PaperCard
-                    id={_id}
-                    branch={branch}
-                    subject={subject}
-                    semester={semester}
-                    file_path={file_path}
-                    file_mimetype={file_mimetype}
+                    id={file._id}
+                    branch={file.branch}
+                    subject={file.subject}
+                    semester={file.semester}
+                    file_path={file.file_path}
+                    file_mimetype={file.file_mimetype}
                   />
                 )
               )
             ) : (
               <tr>
                 <td colSpan={3} style={{ fontWeight: "300" }}>
-                  No files found. Please add some.
+                  Nothing Uploaded Yet relevant to your choise.
                 </td>
               </tr>
             )}
@@ -52,3 +48,12 @@ const PreviousYearPapers = ({ filesList, errorMsg }) => {
   );
 };
 export default PreviousYearPapers;
+
+// {
+//   _id,
+//   subject,
+//   branch,
+//   semester,
+//   file_path,
+//   file_mimetype,
+// }

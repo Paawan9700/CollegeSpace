@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
+
+// importing components 
 import PaperFilters from "../components/PaperFilters";
 import PreviousYearPapers from "../components/PreviousYearPapers";
 import axios from "axios";
+
 const API_URL = "http://localhost:5000/api/file";
 
 const Papers = () => {
@@ -32,7 +35,9 @@ const Papers = () => {
   }, [branch, semester, subject]);
 
   const filter = () => {
-    console.log(semester, branch, subject);
+    console.log(semester);
+    console.log(branch);
+    console.log(subject);
 
     if (semester !== 0 && branch !== "" && subject !== "") {
       const filteredFilesList = allFilesList.filter((file) => {
@@ -47,7 +52,7 @@ const Papers = () => {
   };
 
   return (
-    <div class="d-flex flex-col">
+    <div className="d-flex flex-col">
       <PaperFilters
         semester={semester}
         branch={branch}

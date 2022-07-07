@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import Dropzone from "react-dropzone";
 import axios from "axios";
-// import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import {Row, Col} from "react-bootstrap";
 
 // the common url to be used every where
@@ -76,7 +76,7 @@ const AddPaper = (props) => {
         ECE: ["I", "J", "K", "L"],
         ME: ["M", "N", "O", "P"],
       }
-    ], 
+    ],
     [
       {
         CSE: ["A", "B", "C", "D"],
@@ -146,7 +146,7 @@ const AddPaper = (props) => {
     console.log(branchPass);
     console.log(semester);
 
-    if (branchPass && semester !== 0){
+    if (branchPass && semester !== 0) {
       for (let i = 0; i < allSubjects[semester][0][branchPass].length; i++) {
         subjectList.push(
           <li className="dropdown-item" onClick={subjectHandler}>
@@ -176,6 +176,11 @@ const AddPaper = (props) => {
 
   return (
     <div>
+      <Link to="/previousYearPapers">
+        <button type="button" className="btn btn-secondary">
+          PreviousYearPapers
+        </button>
+      </Link>
       <Form className="search-form" onSubmit={handleOnSubmit}>
         {errorMsg && <p className="errorMsg">{errorMsg}</p>}
 

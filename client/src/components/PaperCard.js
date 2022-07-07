@@ -5,10 +5,14 @@ import "../styles/PreviousYearPapers.scss";
 
 const API_URL = "http://localhost:5000/api/file";
 
-const PaperCard = ({ id, branch, semester, subject, mimetype }) => {
+const PaperCard = (props) => {
+
+  // desturcturing
+  const {id, branch, semester, subject} = props; 
   const [errorMsg, setErrorMsg] = useState("");
 
   console.log(errorMsg);
+
   const downloadFile = async (path) => {
     try {
       const result = await axios.get(`${API_URL}/download/${id}`);
@@ -26,6 +30,8 @@ const PaperCard = ({ id, branch, semester, subject, mimetype }) => {
       }
     }
   };
+
+
   return (
     <div className="card mx-2 my-2 px-4 py-4">
       <div className="card-body">
@@ -42,3 +48,5 @@ const PaperCard = ({ id, branch, semester, subject, mimetype }) => {
 };
 
 export default PaperCard;
+
+// { id, branch, semester, subject, mimetype }
