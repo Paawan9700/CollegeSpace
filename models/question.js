@@ -13,7 +13,7 @@ const questionSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
-      maxlength: 50,
+      maxlength: 500,
       // trim actually removes all the white spaces (e.g. "   hello  "  -> "hello") 
       trim: true,
     },
@@ -39,7 +39,7 @@ const Question = mongoose.model("Question", questionSchema);
 function validateQuestion(question) {
   const schema = Joi.object({
     user: Joi.objectId(),
-    title: Joi.string().min(2).max(50).required(),
+    title: Joi.string().min(2).max(500).required(),
     questionBody: Joi.string().min(2).max(500).required(),
     // this should be a number
     votes: Joi.number(),

@@ -54,6 +54,7 @@ const AddQuestion = (props) => {
         handleAddNewQuestion();
       })
       .catch((e) => {
+        console.log(e);
         // if any kind of error occurs it is being cathced here
         //??????????? after isShowSignup is made true or false then after that how it is showing that signup form
         if (isShowSignup === true) {

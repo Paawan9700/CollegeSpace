@@ -12,10 +12,12 @@ const Router = express.Router();
 var aws = require("aws-sdk");
 var multer = require("multer");
 var multerS3 = require("multer-s3");
+// multer is a kind of middleware for handelling uploadation of files
+// aws-s3 -> amazon simple storage service is basically a cloud storage area used to store files and 
+// any kind of metadata
 
 const { APP_AWSAccessKeyId, APP_AWSSecretKey, APP_S3Bucket } = process.env;
 
-// how to use multer s3 and node.js
 var s3 = new aws.S3({
   accessKeyId: APP_AWSAccessKeyId,
   secretAccessKey: APP_AWSSecretKey,
@@ -27,6 +29,7 @@ var upload = multer({
     s3: s3,
     bucket: "fileuploadvishwas",
     acl: "public-read",
+    // cb -> callback
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -38,37 +41,42 @@ var upload = multer({
   }),
 });
 
+// used for uploading a single file
+const singleUpload = upload.single("file");
+
 // route 1 -> to upload file to the server : login is required (/api/file/upload)
-Router.post( "/upload", upload.single("file"), async (req, res) => {
-    try {
+Router.post("/upload", singleUpload, async (req, res) => {
 
-      // destructuring
-      const { semester, branch, subject, extension } = req.body;
+  try {
+    // destructuring
+    const { semester, branch, subject, extension } = req.body;
 
-      const { location, mimetype } = req.file;
+    // mimetype -> format of a document
+    // ????? how req.file and how that name came
+    const { location, mimetype } = req.file;
 
-      console.log(semester, branch, subject, extension, mimetype);
+    console.log(semester, branch, subject, extension, mimetype);
 
-      const name = `${branch}_${semester}_${subject}_${Date.now()}.${extension}`;
-      console.log(name);
-      const file = new File({
-        name: name,
-        semester,
-        branch,
-        subject,
-        extension,
-        file_path: location,
-        file_mimetype: mimetype,
-      });
+    const name = `${branch}_${semester}_${subject}_${Date.now()}.${extension}`;
+    console.log(name);
+    const file = new File({
+      name: name,
+      semester,
+      branch,
+      subject,
+      extension,
+      file_path: location,
+      file_mimetype: mimetype,
+    });
 
-      await file.save();
-      res.send("file uploaded successfully.");
+    await file.save();
+    res.send("file uploaded successfully.");
 
-    } catch (error) {
-      console.log(error);
-      res.status(500).send("some error occured while uploading file. Please try after some time");
-    }
-  },
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("some error occured while uploading file. Please try after some time..");
+  }
+},
   (error, req, res, next) => {
     if (error) {
       console.log(error);
@@ -87,6 +95,7 @@ Router.get("/getAllFiles", async (req, res) => {
     );
     res.send(sortedByCreationDate);
   } catch (error) {
+    console.log(error.message);
     res.status(500).send("Error while getting list of files. Try again later.");
   }
 });

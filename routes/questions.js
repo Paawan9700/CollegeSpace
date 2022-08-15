@@ -172,8 +172,8 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
 
   try {
     const actionOnButton = req.body.actionTaken;
-    
-    const counter = actionOnButton === "upvote-btn" ? 1 : -1;
+    // console.log(actionOnButton);
+    const counter = (actionOnButton === "upvote-btn" || actionOnButton === 'upvote') ? 1 : -1;
     let question = await Question.findById(req.params.quesid).catch((error) =>
       console.log(error)
     );

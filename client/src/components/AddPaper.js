@@ -1,19 +1,30 @@
 import React, { useState, useRef } from "react";
 import { Form, Button } from "react-bootstrap";
 import Dropzone from "react-dropzone";
+// react hook to create a drag and drop zone for files
 import axios from "axios";
 import { Link } from "react-router-dom";
 // import {Row, Col} from "react-bootstrap";
 
-// the common url to be used every where
+// the common url to be used every where (url for calling API for upload)
 const API_URL = "http://localhost:5000/api/file";
 
 const AddPaper = (props) => {
-  const [file, setFile] = useState(null); // state for storing actual image
-  const [previewSrc, setPreviewSrc] = useState(""); // state for storing previewImage
+  const [file, setFile] = useState(null); 
+  // state for storing actual image (initially null and after its state changes it is stored here)
+
+  const [previewSrc, setPreviewSrc] = useState(""); 
+  // state for storing previewImage (after file is selected this state is used for preview)
+
   const [errorMsg, setErrorMsg] = useState("");
-  const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); // state to show preview only for images
-  const dropRef = useRef(); // React ref for managing the hover state of droppable area
+
+  const [isPreviewAvailable, setIsPreviewAvailable] = useState(false); 
+  // state to show preview only for images or any kind of file
+
+  const dropRef = useRef(); 
+  // React ref for managing the hover state of droppable area
+
+  // which semester, branch and subject this particular file belongs to
   const [semester, setSemester] = useState(0);
   const [branch, setBranch] = useState("");
   const [subject, setSubject] = useState("");
@@ -87,12 +98,14 @@ const AddPaper = (props) => {
     ]
   ];
 
+  
   const handleOnSubmit = async (event) => {
     alert("your Notes / Paper has been added!")
     event.preventDefault();
     console.log(file);
     try {
       if (subject !== "" && semester !== 0 && branch !== "") {
+        // this if makes sure that every thing is being provided by the user.
         if (file) {
           const formData = new FormData();
           formData.append("file", file);
@@ -112,9 +125,10 @@ const AddPaper = (props) => {
           setErrorMsg("Please select a file to add.");
         }
       } else {
-        setErrorMsg("Please enter all the field values.");
+        setErrorMsg("Please enter all the required fields which inlcudes semester, branch, subject.");
       }
     } catch (error) {
+      console.log(error.message);
       error.response && setErrorMsg(error.response.data);
     }
   };
@@ -160,8 +174,6 @@ const AddPaper = (props) => {
 
   const semesterHandler = (choosenSemester) => {
     setSemester(parseInt(choosenSemester.target.outerText[9]));
-    // subjectsHandler(choosenSemester.target.outerText);
-    // console.log(choosenSemester.target.outerText);
   };
 
   const branchHandler = (choosenBranch) => {
@@ -169,8 +181,8 @@ const AddPaper = (props) => {
     subjectsHandler(choosenBranch.target.outerText);
   };
 
-  const subjectHandler = (e) => {
-    setSubject(e.target.outerText);
+  const subjectHandler = (choosenSubject) => {
+    setSubject(choosenSubject.target.outerText);
   };
 
 
@@ -181,7 +193,9 @@ const AddPaper = (props) => {
           PreviousYearPapers
         </button>
       </Link>
+
       <Form className="search-form" onSubmit={handleOnSubmit}>
+        {/* if there is any error */}
         {errorMsg && <p className="errorMsg">{errorMsg}</p>}
 
         <div className="d-flex flex-row justify-content-evenly">
@@ -194,6 +208,7 @@ const AddPaper = (props) => {
           >
             {semester === 0 ? "Select Semester" : "Semester " + semester}
           </button>
+
           <ul className="dropdown-menu" aria-labelledby="navbarDropdown2">
             {/* all semester all listed here */}
             <li className="dropdown-item" onClick={semesterHandler}>
@@ -261,8 +276,11 @@ const AddPaper = (props) => {
             {allSemesterSubjects}
           </ul>
         </div>
+        {/* all drop down are completed till here */}
+
 
         <div className="upload-section my-4">
+        {/* react drop zone */}
           <Dropzone
             onDrop={onDrop}
             onDragEnter={() => updateBorder("over")}
