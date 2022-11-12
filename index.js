@@ -1,11 +1,11 @@
 const express = require("express");
 const app = express();
 
-// using mongoose to connect to mongoDB
-const mongoose = require("mongoose");
-
 // mainly user for data or (input) validation
 const Joi = require("joi");
+
+const mongoose = require('mongoose');
+const connectToMongo = require('./db');
 
 Joi.objectId = require("joi-objectid")(Joi);
 
@@ -24,23 +24,12 @@ require("dotenv").config();
 
 const { APP_USER, APP_USER_PASSWORD } = process.env;
 
-// mongoose being a driver user to connect our web application from the mongoDB
-mongoose
-  .connect(
-    `mongodb://localhost/playground`,
-    {
-      useCreateIndex: true,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("Connected to MongoDB succesfully.."))
-  .catch((err) => console.log(err));
+connectToMongo();
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.set("useFindAndModify", false);
+
 
 // all the routes using that mentioned routes (e.g.  questions, answers, users, auth etc)
 app.use("/api/questions", questions);
