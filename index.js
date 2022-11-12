@@ -7,7 +7,6 @@ const mongoose = require("mongoose");
 // mainly user for data or (input) validation
 const Joi = require("joi");
 
-// ????
 Joi.objectId = require("joi-objectid")(Joi);
 
 // acquiring all the routes from the routes file
