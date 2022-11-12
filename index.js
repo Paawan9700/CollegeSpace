@@ -40,7 +40,6 @@ mongoose
 app.use(express.json());
 app.use(cors());
 
-// ?????
 mongoose.set("useFindAndModify", false);
 
 // all the routes using that mentioned routes (e.g.  questions, answers, users, auth etc)
@@ -53,7 +52,6 @@ app.use("/api/file", require("./routes/files"));
 // taking backend port to be 5000
 const port = process.env.PORT || 5000;
 
-// ?????? 
 if (process.env.NODE_ENV == "production") {
   app.use(express.static("client/build"));
 

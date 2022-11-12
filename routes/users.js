@@ -72,6 +72,7 @@ router.post("/", [
 
     const { email, password } = req.body;
 
+    console.log(req.body);
     let user = User.findOne({ email: email });
     // ????? why user.email rather user can also be used
     if (user.email) return res.status(400).send("User already registered..");
