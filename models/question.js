@@ -24,6 +24,7 @@ const questionSchema = new mongoose.Schema(
     },
     tags: {
       type: Array,
+      default: "General"
     },
     votes: {
       type: Number,

@@ -4,7 +4,6 @@ const { Question, validate } = require("../models/question");
 // of the question that the uset has just entered
 
 const express = require("express");
-
 const router = express.Router();
 
 const auth = require("../middleware/auth");

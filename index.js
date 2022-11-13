@@ -10,6 +10,7 @@ const connectToMongo = require('./db');
 Joi.objectId = require("joi-objectid")(Joi);
 
 // acquiring all the routes from the routes file
+// Available routes
 const questions = require("./routes/questions");
 const answers = require("./routes/answers");
 const users = require("./routes/users");
