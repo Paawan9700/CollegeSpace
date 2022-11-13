@@ -16,6 +16,7 @@ const { User } = require("../models/user");
 
 const express = require("express");
 const router = express.Router();
+require("dotenv").config();
 
 // route 1 -> getting the user having a valid auth token  (/api/auth/me)
 // authentication is required in this step
@@ -53,9 +54,9 @@ router.get("/:userId", async (req, res) => {
 
 
 
-// route-3 ->  signup a new user (/api/users) -> no login required
+// route-3 ->  signup a new user (/api/users) -> no login required(no authenticarion is required)
 // that why auth middle-ware is not used here (new user is there)
-router.post("/", [
+router.post("/signup", [
   body('email', 'Please Enter a valid email').isEmail(),
   body('name', 'Enter a valid name').isLength({ min: 3 }),
   body('password', 'Min Password should be of 5 length').isLength({ min: 5 }),
@@ -67,15 +68,14 @@ router.post("/", [
     return res.status(400).json({ errors: errors.array() });
   }
 
-  
   try {
 
     const { email, password } = req.body;
 
     console.log(req.body);
     let user = User.findOne({ email: email });
-    // ????? why user.email rather user can also be used
-    if (user.email) return res.status(400).send("User already registered..");
+    
+    if (user) return res.status(400).send("Same email found.. User already registered..");
 
     user = new User(_.pick(req.body, ["name", "email", "password"]));
     const salt = await bcrypt.genSalt(10);

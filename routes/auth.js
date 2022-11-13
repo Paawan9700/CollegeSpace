@@ -24,8 +24,9 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 
+// auth can be merged with users but still there seperated
 
-// route-1 
+// route-1 (getting all the users )
 router.get("/", async (req, res) => {
   // displaying all users sorted according to their name
   const users = await User.find().sort("name");
