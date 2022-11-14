@@ -6,7 +6,6 @@ module.exports = function (req, res, next) {
   if (!token) return res.status(401).send("Access denied. Login first");
   try {
     const decoded = jwt.verify(token, process.env.APP_JWT_PK);
-    userId = "Vishwas";
     req.user = decoded;
     next();
   } catch (err) {
