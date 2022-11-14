@@ -18,7 +18,7 @@ const express = require("express");
 const router = express.Router();
 require("dotenv").config();
 
-// route 1 -> getting the user having a valid auth token  (/api/auth/me)
+// route 1 -> getting the user having a valid auth token  (/api/users/me)
 // authentication is required in this step
 // auth is the middle-ware 
 router.get("/me", auth, async (req, res) => {
@@ -26,7 +26,6 @@ router.get("/me", auth, async (req, res) => {
   // try and catch statement to avoid any external error
   try {
     const userId = req.user._id;
-
     const user = await User.findById(userId).select("-password");
     res.send(user);
 
@@ -34,7 +33,6 @@ router.get("/me", auth, async (req, res) => {
     console.error(error.message);
     res.status(500).send("some error occured");
   }
-
 });
 
 // route 2  -> getting the user who has entered this question
@@ -71,8 +69,6 @@ router.post("/signup", [
   try {
 
     const { email, password } = req.body;
-
-    console.log(req.body);
     let user = await User.findOne({ email: email });
     
     if (user) return res.status(400).send("Same email found.. User already registered..");

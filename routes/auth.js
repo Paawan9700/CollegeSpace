@@ -26,7 +26,7 @@ const router = express.Router();
 
 // auth can be merged with users but still there seperated
 
-// route-1 (getting all the users )
+// route-1 (getting all the users ) (/api/auth)
 router.get("/", async (req, res) => {
   // displaying all users sorted according to their name
   const users = await User.find().sort("name");
@@ -34,7 +34,7 @@ router.get("/", async (req, res) => {
 });
 
 // route-2 -> login route -> /api/auth   (no login required)
-router.post("/", [
+router.post("/login", [
   body('email', 'Please Enter a valid email').isEmail(),
   body('password', 'password cnanot be blank').exists()
 ], async (req, res) => {
