@@ -73,12 +73,12 @@ router.post("/signup", [
     const { email, password } = req.body;
 
     console.log(req.body);
-    let user = User.findOne({ email: email });
+    let user = await User.findOne({ email: email });
     
     if (user) return res.status(400).send("Same email found.. User already registered..");
 
     user = new User(_.pick(req.body, ["name", "email", "password"]));
-    const salt = await bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(9);
     // salt is used just to make our password stronger
     user.password = await bcrypt.hash(user.password, salt);
     // password hashing
