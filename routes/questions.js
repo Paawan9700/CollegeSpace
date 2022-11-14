@@ -5,6 +5,7 @@ const { Question, validate } = require("../models/question");
 
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose")
 
 const auth = require("../middleware/auth");
 // auth middleware is used wherever authentication is being required
@@ -12,6 +13,7 @@ const auth = require("../middleware/auth");
 const _ = require("lodash");
 
 // route 1  -> to display all the already written questions sorted by date (/api/questions)
+// no login required
 router.get("/", async (req, res) => {
 
   try {
@@ -28,7 +30,7 @@ router.get("/", async (req, res) => {
 });
 
 // route 2 -> adding a new question (/api/questions) -> authentication is required
-router.post("/", auth, async (req, res) => {
+router.post("/addquestion", auth, async (req, res) => {
 
   // the question details entered by the user should first be validated
   // if it is validated according to the all validation checks
@@ -56,8 +58,8 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-// route 3 -> /api/questions/subject -> login is required
-// this route is helping in filtering the questionsbased on the categories(or tags)
+// route 3 -> /api/questions/subject (subject === tag you have entered)
+// this route is helping in filtering the questions based on the categories(or tags)
 router.get("/:subject", async (req, res) => {
 
   try {
@@ -65,7 +67,7 @@ router.get("/:subject", async (req, res) => {
     questions.reverse();
 
     // after questions are filtered they are to be returned in the sorted basis
-    console.log(req.params.subject);
+    // console.log(req.params.subject);
 
     if (req.params.subject == "All") {
       // if the tag is ALL then return all questions in sorted manner
@@ -130,32 +132,63 @@ router.get("/:searchText/search", async (req, res) => {
 });
 
 
-// route 5 -> /api/questions/id
-// this route is ued to update the particular question
-router.put("/:id", auth, async (req, res) => {
+// route 5 -> /api/questions/updatequestion/:id
+// this route is used to update the particular question
+mongoose.set('useFindAndModify', false);
+router.put("/updatequestion/:id", auth, async (req, res) => {
+
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  const question = await Question.findByIdAndUpdate(
-    req.params.id,
-    { title: req.body.title },
-    { new: true }
-  );
-  if (!question)
-    return res.status(404).send("The question with the given Id doesnt exist");
+  try {
+    // destructuring from req
+    const { title, questionBody, votes } = req.body;
 
-  res.send(question);
+    const updatedQuestion = {};
+    if (title)
+      updatedQuestion.title = title;
+
+    if (questionBody)
+      updatedQuestion.questionBody = questionBody;
+
+    if (votes)
+      updatedQuestion.votes = votes;
+
+    let question = await Question.findById(req.params.id);
+    if (!question)
+      return res.status(404).send("this question doesnot found");
+
+
+    // console.log(question);
+    // console.log(req.user);
+
+    if (question.user.toString() !== req.user._id)
+      return res.status(401).send("Access Denied");
+
+
+    question = await Question.findOneAndUpdate(req.params.id, { $set: updatedQuestion }, { new: true })
+    res.json({ question });
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("some error occured");
+  }
 });
 
 
-// route 6 -> /api/questions/quesid -> login required
+// route 6 -> /api/questions/deletequestion/quesid -> login required
 // this route is used to delete a particular question
-router.delete("/:quesid", auth, async (req, res) => {
+router.delete("/deletequestion/:quesid", auth, async (req, res) => {
+
   try {
-    const question = await Question.findByIdAndRemove(req.params.quesid);
+    let question = await Question.findById(req.params.quesid);
     // taking out the question having that particular id
     if (!question)
       return res.status(404).send("The question with the given Id doesnt exist");
+
+    if (question.user.toString() !== req.user._id)
+      return res.status(401).send("Access Denied");
+
+    question = await Question.findByIdAndDelete(req.params.quesid);
     res.send(question);
 
   } catch (error) {
