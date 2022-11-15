@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 
 });
@@ -54,7 +54,7 @@ router.post("/addquestion", auth, async (req, res) => {
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -86,49 +86,60 @@ router.get("/:subject", async (req, res) => {
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 });
 
-// route 4 -> 
-router.get("/:searchText/search", async (req, res) => {
-  const questions = await Question.find().sort("createdAt");
-  questions.reverse();
+// route 4 -> route for searching a particular question or answer for a text
+// route (/api/quetions/search/:searchText)
+router.get("/search/:searchText", async (req, res) => {
+  // const questions = await Question.find().sort("createdAt");
+  // questions.reverse();
 
-  let filteredQuestions = [];
-  questions.map((question) => {
-    if (
-      question.title
-        .split(" ")
-        .map((v) => v.toLowerCase())
-        .some((item) =>
-          req.params.searchText
-            .split(" ")
-            .map((v) => v.toLowerCase())
-            .includes(item)
-        ) ||
-      question.questionBody
-        .split(" ")
-        .map((v) => v.toLowerCase())
-        .some((item) =>
-          req.params.searchText
-            .split(" ")
-            .map((v) => v.toLowerCase())
-            .includes(item)
-        ) ||
-      question.tags
-        .map((v) => v.toLowerCase())
-        .some((item) =>
-          req.params.searchText
-            .split(" ")
-            .map((v) => v.toLowerCase())
-            .includes(item)
-        )
-    ) {
-      filteredQuestions.push(question);
-    }
-  });
-  res.send(filteredQuestions);
+  try {
+    const tosearch = req.params.searchText;
+    const questions = await Question.find({title : {$regex : tosearch, $options : "i"}});
+    res.send(questions);
+
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send("Internal server error");   
+  }
+
+
+  // let filteredQuestions = [];
+  // questions.map((question) => {
+  //   if (
+  //     question.title
+  //       .split(" ")
+  //       .map((v) => v.toLowerCase())
+  //       .some((item) =>
+  //         req.params.searchText
+  //           .split(" ")
+  //           .map((v) => v.toLowerCase())
+  //           .includes(item)
+  //       ) ||
+  //     question.questionBody
+  //       .split(" ")
+  //       .map((v) => v.toLowerCase())
+  //       .some((item) =>
+  //         req.params.searchText
+  //           .split(" ")
+  //           .map((v) => v.toLowerCase())
+  //           .includes(item)
+  //       ) ||
+  //     question.tags
+  //       .map((v) => v.toLowerCase())
+  //       .some((item) =>
+  //         req.params.searchText
+  //           .split(" ")
+  //           .map((v) => v.toLowerCase())
+  //           .includes(item)
+  //       )
+  //   ) {
+  //     filteredQuestions.push(question);
+  //   }
+  // });
 });
 
 
@@ -170,7 +181,7 @@ router.put("/updatequestion/:id", auth, async (req, res) => {
     res.json({ question });
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -193,7 +204,7 @@ router.delete("/deletequestion/:quesid", auth, async (req, res) => {
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 });
 
@@ -219,7 +230,7 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
 
   } catch (error) {
     console.error(error.message);
-    res.status(500).send("some error occured");
+    res.status(500).send("Internal server error");
   }
 });
 
