@@ -12,13 +12,14 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.22.0",
+    "concurrently": "^7.5.0",
     "downloadjs": "^1.4.7",
     "react": "^17.0.2",
     "react-bootstrap": "^2.4.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^17.0.2",
     "react-dropzone": "^14.2.1",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "^4.0.3",
     "sass": "^1.52.2",
     "universal-cookie": "^4.0.4",
@@ -28,7 +29,8 @@
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject", 
+    "both" : "concurrently \"npm run start\" \"nodemon index.js\""
   },
   "eslintConfig": {
     "extends": [
