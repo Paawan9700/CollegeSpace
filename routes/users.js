@@ -69,8 +69,15 @@ router.post("/signup", [
   try {
 
     const { email, password } = req.body;
+    let isCollegeId = 0;
+    if (email.includes("lnmiit.ac.in"))
+      isCollegeId = 1;
+
+    if (isCollegeId === 0)
+      return res.status(400).send("Please use College email id");
+
     let user = await User.findOne({ email: email });
-    
+
     if (user) return res.status(400).send("Same email found.. User already registered..");
 
     user = new User(_.pick(req.body, ["name", "email", "password"]));

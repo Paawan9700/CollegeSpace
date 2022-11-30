@@ -7,7 +7,7 @@ import "../styles/LoginForm.css";
 const LoginForm = (props) => {
 
   // destructing properties and functions
-  const { isShowLogin, setIsShowLogin, setIsLoggedIn } = props;
+  const { isShowLogin, setIsShowLogin, setIsLoggedIn,setIsAdmin } = props;
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +16,7 @@ const LoginForm = (props) => {
 
   const handleLogin = async () => {
     await axios
-    .post("http://localhost:5000/api/auth", {
+    .post("http://localhost:5000/api/auth/login", {
       email,
       password,
     })
@@ -26,7 +26,11 @@ const LoginForm = (props) => {
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
         window.sessionStorage.setItem("name", res.data.name);
-        
+        console.log(email)
+        if(email==='19ucs151@gmail.com' && password==='Mayank@41')
+        {
+          setIsAdmin(true);
+        }
         setIsLoggedIn(true);
         setLoginAnimation(1);
         setTimeout(() => {

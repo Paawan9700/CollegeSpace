@@ -29,6 +29,20 @@ router.get("/", async (req, res) => {
 
 });
 
+router.get('/toVerify',async (req,res)=>{
+  try{
+    const questions = await Question.find({vereifiedByAdmin:false}).sort("createdAt");
+    // console.log(questions,"35")
+    questions.reverse();
+    res.send(questions);
+  }
+  catch(err){
+    console.error(err.message);
+    res.status(500).send("some error occured");
+  }
+})
+
+
 // route 2 -> adding a new question (/api/questions) -> authentication is required
 router.post("/addquestion", auth, async (req, res) => {
 
@@ -98,12 +112,12 @@ router.get("/search/:searchText", async (req, res) => {
 
   try {
     const tosearch = req.params.searchText;
-    const questions = await Question.find({title : {$regex : tosearch, $options : "i"}});
+    const questions = await Question.find({ title: { $regex: tosearch, $options: "i" } });
     res.send(questions);
 
   } catch (error) {
     console.log(error.message);
-    res.status(500).send("Internal server error");   
+    res.status(500).send("Internal server error");
   }
 
 
@@ -209,23 +223,40 @@ router.delete("/deletequestion/:quesid", auth, async (req, res) => {
 });
 
 
-// route 7 -> /api/questions/quesid/action
+// route 7 -> /api/questions/quesid/userid/action
 // this route is used to upvote or downvote the particular question
+const obj = {};
+var list = [];
+
 router.post("/:quesid/action", auth, async (req, res, next) => {
 
   try {
     const actionOnButton = req.body.actionTaken;
-    // console.log(actionOnButton);
+    const userWhoVoted = req.params.userid;
+    const questionVoted = req.params.quesid;
+
+    // obj[userWhoVoted] = questionVoted;
+    // for (let i = 0; i < list.length; ++i) {
+    //   let alreadyUser = list[i][0];
+    //   let alreadyQuestion = list[i][1];
+
+    //   if (alreadyUser === userWhoVoted && alreadyQuestion === questionVoted)
+    //     res.send("You Have already Voted");
+    // }
+
+
+    
     const counter = (actionOnButton === "upvote-btn" || actionOnButton === 'upvote') ? 1 : -1;
-    let question = await Question.findById(req.params.quesid).catch((error) =>
-      console.log(error)
+    let question = await Question.findById(questionVoted).catch((error) =>
+    console.log(error)
     );
-
+    
     if (!question)
-      return res.status(404).send("The question with the given Id doesnt exist..");
-
+    return res.status(404).send("The question with the given Id doesnt exist..");
+    
     question.votes += counter;
     question = await question.save().catch((error) => console.log(error));
+    list.push([userWhoVoted, questionVoted]);
     res.send(question);
 
   } catch (error) {
@@ -233,5 +264,39 @@ router.post("/:quesid/action", auth, async (req, res, next) => {
     res.status(500).send("Internal server error");
   }
 });
+
+
+router.post("/:quesid/accept", auth, async (req, res, next) => {
+
+  try {
+    const actionOnButton = req.body.actionTaken;
+    
+    if(actionOnButton === "accept-btn")
+    {
+      let question = await Question.findById(req.params.quesid).catch((error) =>
+        console.log(error)
+      );
+      // console.log(question);
+      if (!question)
+      return res.status(404).send("The question with the given Id doesnt exist..");
+      question.vereifiedByAdmin = true;
+      question = await question.save().catch((error) => console.log(error));
+      res.send(question);
+
+    }
+    else{
+      const question = await Question.findByIdAndRemove(req.params.quesid);
+      // taking out the question having that particular id
+      if (!question)
+        return res.status(404).send("The question with the given Id doesnt exist");
+      res.send(question);
+    }
+
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send("some error occured");
+  }
+});
+
 
 module.exports = router;

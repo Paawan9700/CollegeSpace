@@ -17,6 +17,10 @@ const questionSchema = new mongoose.Schema(
       // trim actually removes all the white spaces (e.g. "   hello  "  -> "hello") 
       trim: true,
     },
+    vereifiedByAdmin:{
+      type:Boolean,
+      default:false
+    },
     questionBody: {
       type: String,
       required: true,

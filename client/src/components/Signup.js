@@ -14,14 +14,12 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
   const handleSignup = async () => {
     console.log("signup is clicked")
     await axios
-      .post("http://localhost:5000/api/users", {
+      .post("http://localhost:5000/api/users/signup", {
         name,
         email,
         password,
       })
       .then((res) => {
-        
-        
         window.sessionStorage.setItem("x-auth-token", res.data.token);
         window.sessionStorage.setItem("userId", res.data.userId);
         window.sessionStorage.setItem("email", email);
@@ -73,6 +71,7 @@ const SignupForm = ({ isShowSignup, setIsShowSignup, setIsLoggedIn }) => {
           type="text"
           onChange={onChangeEmail}
           className="login-box"
+          placeholder="use College email id"
         />
         <br></br>
         <label>Password</label>

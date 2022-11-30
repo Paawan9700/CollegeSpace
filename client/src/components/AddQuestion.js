@@ -32,7 +32,7 @@ const AddQuestion = (props) => {
     // post request is being made on API -> /api/questions
     axios
       .post(
-        `${host}/api/questions`,
+        `${host}/api/questions/addquestion`,
         {
           title,
           questionBody,

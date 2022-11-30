@@ -11,7 +11,7 @@ import Answer from "./Answer";
 const Article = (props) => {
 
   // destructuring 
-  const { key, question, user, title, questionBody, tags, votes, deleteQuestion, setDeleteQuestion, setIsShowSignup } = props
+  const { key, question, user, title, questionBody, tags, votes, deleteQuestion, setDeleteQuestion, setIsShowSignup,isAdmin } = props
 
   const host = "http://localhost:5000"
 
@@ -75,6 +75,25 @@ const Article = (props) => {
       });
   };
 
+  const accessHandler = async (userAction)=>{
+    const questionsTOAccept = question;
+    await axios
+          .post(`${host}/api/questions/${questionsTOAccept}/accept`,
+          {
+            actionTaken: userAction.target.className,
+          },
+          {
+            headers: { "x-auth-token": token },
+          }
+          )
+          .then((res)=>{
+            
+          })
+          .catch(err=>{
+            
+          })
+  }
+
   useEffect(() => {
     async function getAnswersHandler() {
       const answers = await axios.get(
@@ -123,29 +142,50 @@ const Article = (props) => {
           <h4 className="title-text">
             <span>Question.</span> {title}
           </h4>
-
           <div className="article-buttons">
+          {!isAdmin ?
             <button className="answer-question" onClick={AnswerHandler}>
               Want To Answer
             </button>
-
+            :
+            (
+              null
+            )
+            }
             {user === window.sessionStorage.getItem("userId") ? (
               <button className="delete-question" onClick={DeleteHandler}>
                 Delete
               </button>
             ) : null}
 
-            <div className="votes">
-              <button className="upvote-btn" onClick={VoteHandler}>
-                <img alt="upvote" className="upvote" src={upArrow}></img>
-              </button>
+            {
+              !isAdmin 
+              ?
+              (
+                <div className="votes">
+                  <button className="upvote-btn" onClick={VoteHandler}>
+                    <img alt="upvote" className="upvote" src={upArrow}></img>
+                  </button>
 
-              <button className="downvote-btn" onClick={VoteHandler}>
-                <img alt="downvote" className="downvote" src={downArrow}></img>
-              </button>
+                  <button className="downvote-btn" onClick={VoteHandler}>
+                    <img alt="downvote" className="downvote" src={downArrow}></img>
+                  </button>
 
-              <h3 className="counter">{currentVotes}</h3>
-            </div>
+                  <h3 className="counter">{currentVotes}</h3>
+                </div>
+              ) 
+              :
+              (
+                  <div className="accept-post">
+                     <button className="accept-btn" onClick={accessHandler}>
+                        Accept
+                      </button>
+                    <button className="deny-btn" onClick={accessHandler}>
+                      Deny
+                    </button>
+                  </div> 
+              )
+            }
           </div>
         </div>
 
@@ -161,12 +201,12 @@ const Article = (props) => {
         </div>
 
         <hr></hr>
-          <span>All related Answers:</span>
+          {!isAdmin && <span>All related Answers:</span>}
         <span className="expand" onClick={ExpandHandler}>
           &nbsp;&nbsp;&nbsp;(View All answers)
         </span>
       </div>
-      {answerNow ? (
+      {answerNow &&!isAdmin? (
         <form className={`answer-box ${answerNow ? "active" : ""}`}>
           <textarea
             type="text"
